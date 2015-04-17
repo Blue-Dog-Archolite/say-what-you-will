@@ -2,19 +2,18 @@ Dir[File.dirname(__FILE__) + '/lib/*.rb'].each {|file| require file }
 Dir[File.dirname(__FILE__) + '/monkey_patches/*.rb'].each {|file| require file }
 
 data_store = DataStore.new
-grouped_data = nil
+completion_data = nil
 
-grouped_data = if data_store.data
-                  puts 'Lodaing from File'
-                  grouped_data = data_store.data
-                else
-                  puts 'Parsing from file'
-                  data = DataParser.new.group_by_with_count
-                  data_store.persist(data)
-                  data
-                end
+if data_store.data
+  puts 'Lodaing from File'
+  completion_data = data_store.data
+else
+  puts 'Parsing from file'
+  completion_data = DataParser.new.completion_data
+  data_store.persist(grouped_data)
+end
 
-puts grouped_data
+puts completion_data
 
 
 # Just implementing a simple inverted index here.

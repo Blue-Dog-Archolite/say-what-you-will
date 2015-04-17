@@ -18,10 +18,6 @@ class DataStore
   def persist(data)
     md = Marshal.dump(data)
 
-    puts '!'*50
-    puts md
-    puts '!'*50
-
     open(data_dump, "w") do |index|
       index.write md
     end
