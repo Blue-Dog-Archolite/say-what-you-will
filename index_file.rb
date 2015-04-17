@@ -9,19 +9,11 @@ if data_store.data
   completion_data = data_store.data
 else
   puts 'Parsing from file'
+  puts 'This will take a while....'
   completion_data = DataParser.new.completion_data
-  data_store.persist(grouped_data)
+  data_store.persist(completion_data)
 end
 
+# This is a testing value that will parse and display the hash that is generated.
+# Not suggested for regular usage
 puts completion_data
-
-
-# Just implementing a simple inverted index here.
-#ARGV.each do |filename|
-#  open filename do |file|
-#    file.read.index_sanitize.each do |word|
-#      @data[word] ||= []
-#      @data[word] << filename unless @data[word].include? filename
-#    end
-#  end
-#end

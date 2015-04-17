@@ -1,6 +1,13 @@
 Autocomplete Problem
 ====================
 
+To Run
+====================
+ruby lookup_file.rb list of strings to auto complete separated by spaces
+
+
+
+
 Create a Ruby library that can autocomplete word fragments using a text file as the data source.
 
 * You should be able to index the autocomplete-able words from any text file (feel free to ignore non-word entities like numbers)

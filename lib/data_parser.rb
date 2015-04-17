@@ -1,40 +1,46 @@
 class DataParser
-  attr_reader :source_file
+  attr_accessor :source_file, :hashed_data
 
   def initialize(source_file = 'data/shakespeare-complete.txt')
     @source_file = source_file
+    @hashed_data = {}
   end
+
+  def completion_data
+    @indexed ||= create_index
+  end
+
+  private
 
   def file_as_array
     # Parse and strip non-letter chars
     @stripped_file ||=  open source_file do |file|
-                          file.read.index_sanitize
-                        end
+      file.read.index_sanitize
+    end
   end
 
   def create_index
-    hashed = {}
-    hashed_key = ''
-    to_eval = ''
-
     group_by_with_count.each do |word, count|
       next if word.empty?
       hashed_key = ''
 
       word.each_char do |char|
         hashed_key = hashed_key + "['#{char}']"
-        instance_eval("hashed#{hashed_key} ||= {}")
+        create_values(hashed_key, word, count)
       end
 
-      to_eval = "hashed#{hashed_key}['vaue'] = #{count}"
-     instance_eval(to_eval)
+      instance_eval("hashed_data#{hashed_key}['value'] = #{count}")
     end
 
-    hashed
+    hashed_data
   end
 
-  def completion_data
-    @indexed ||= create_index
+  def create_values(hashed_key, word, count)
+    # Set base level hash values if not existing
+    instance_eval("hashed_data#{hashed_key} ||= {'words' => []}")
+
+    # Sets words at this level of complete
+    instance_eval("hashed_data#{hashed_key}['words'] << {'word' => '#{word}', 'count' => #{count} }")
   end
 
   def group_by_with_count

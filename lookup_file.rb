@@ -1,22 +1,22 @@
-if File.exist? "data/index.dat"
-  @data = Marshal.load open("data/index.dat")
+Dir[File.dirname(__FILE__) + '/lib/*.rb'].each {|file| require file }
+Dir[File.dirname(__FILE__) + '/monkey_patches/*.rb'].each {|file| require file }
+
+data_store = DataStore.new
+completion_data = nil
+
+if data_store.data
+  puts 'Lodaing from File'
+  completion_data = data_store.data
 else
-  raise "The index data file could not be located."
+  puts 'Parsing from file'
+  puts 'This will take a while'
+  completion_data = DataParser.new.completion_data
+  data_store.persist(completion_data)
 end
 
-class String
-  def index_sanitize
-    self.split.collect do |token|
-      token.downcase.gsub(/\W/, '')
-    end
-  end
-end
 
 # Take anything passed in on the command line in any form and break it
 # down the same way we did when making the index.
 ARGV.join(' ').index_sanitize.each do |word|
-  @result ||= @data[word]
-  @result &= @data[word]
+  WordSuggestion.suggest_words(word, completion_data)
 end
-
-p @result

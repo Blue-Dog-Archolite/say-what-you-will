@@ -15,6 +15,12 @@ class DataStore
     @data ||= load_from_source
   end
 
+  def keyify_string(string)
+  end
+
+  def matches(string)
+  end
+
   def persist(data)
     md = Marshal.dump(data)
 
