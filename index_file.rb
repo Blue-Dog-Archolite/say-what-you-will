@@ -5,7 +5,7 @@ data_store = DataStore.new
 completion_data = nil
 
 if data_store.data
-  puts 'Lodaing from File'
+  puts 'Loading from File'
   completion_data = data_store.data
 else
   puts 'Parsing from file'
