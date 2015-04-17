@@ -14,7 +14,7 @@ module WordSuggestion
     unless possible_solutions['words']
       puts "No Suggestions found for #{partial}."
     else
-      top_25 = possible_solutions['words'].sort_by { |hsh| hsh['count'] }.reverse.slice(0..25)
+      top_25 = possible_solutions['words'].sort_by { |hsh| hsh['count'] }.reverse.slice(0..24)
 
       # Sort and take the top 25
       puts "The top #{top_25.length} suggestions for #{partial} are:"
@@ -23,10 +23,5 @@ module WordSuggestion
       end
 
     end
-
-  rescue => e
-    puts '%'*20
-    puts possible_solutions['words'].sort_by { |hsh| hsh['count'] }
-    puts '%'*20
   end
 end
