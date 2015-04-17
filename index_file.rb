@@ -1,29 +1,14 @@
-if File.exist? "data/index.dat"
-  @data = Marshal.load open("data/index.dat")
-else
-  @data = {}
-end
+Dir[File.dirname(__FILE__) + '/lib/*.rb'].each {|file| require file }
+Dir[File.dirname(__FILE__) + '/monkey_patches/*.rb'].each {|file| require file }
 
-# Let's give the string class the ability to tokenize itsself into lowercase
-# words with no punctuation.
-class String
-  def index_sanitize
-    self.split.collect do |token|
-      token.downcase.gsub(/\W/, '')
-    end
-  end
-end
+puts DataParser.new.group_by_with_count
 
 # Just implementing a simple inverted index here.
-ARGV.each do |filename|
-  open filename do |file|
-    file.read.index_sanitize.each do |word|
-      @data[word] ||= []
-      @data[word] << filename unless @data[word].include? filename
-    end
-  end
-end
-
-open("data/index.dat", "w") do |index|
-  index.write Marshal.dump(@data)
-end
+#ARGV.each do |filename|
+#  open filename do |file|
+#    file.read.index_sanitize.each do |word|
+#      @data[word] ||= []
+#      @data[word] << filename unless @data[word].include? filename
+#    end
+#  end
+#end
