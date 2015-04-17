@@ -1,5 +1,5 @@
 class DataParser
-  attr_accessor :source_file
+  attr_reader :source_file
 
   def initialize(source_file = 'data/shakespeare-complete.txt')
     @source_file = source_file
@@ -16,6 +16,4 @@ class DataParser
     # This is group by with count
     file_as_array.each_with_object(Hash.new(0)) {|e, h| h[e] += 1}
   end
-
-
 end

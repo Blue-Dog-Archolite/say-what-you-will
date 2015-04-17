@@ -1,22 +1,29 @@
 class DataStore
-  attr_reader :file_name
-  def initialize(file_name = 'data/data_storage.dat')
-    @file_name = file_name
+  attr_reader :data_dump
+
+  def initialize(data_dump = 'data/data_storage.dat')
+    @data_dump = data_dump
   end
 
   def load_from_source
-    return {} unless File.exist? file_name
+    return unless File.exist? data_dump
 
-    Marshal.load open( file_name )
+    Marshal.load open( data_dump )
   end
 
   def data
     @data ||= load_from_source
   end
 
-  def persist
-    open(file_name, "w") do |index|
-      index.write Marshal.dump(@data)
+  def persist(data)
+    md = Marshal.dump(data)
+
+    puts '!'*50
+    puts md
+    puts '!'*50
+
+    open(data_dump, "w") do |index|
+      index.write md
     end
   end
 end
